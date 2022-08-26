@@ -106,41 +106,6 @@ diccionario_cabeceras = {
   'TOP' : ['PROCESOS',  filtros['TOPCabecera'], filtros['TOPDatos'] ]
 }
 
-
-lista_secciones = [
-  ['CPU', 'CPUS', filtros['CPUNCabecera'], filtros['CPUNDatos']],
-  ['CPUALL', 'CPUALL', filtros['CPUALLCabecera'], filtros['CPUALLDatos']],
-  ['LPAR', 'LPAR', filtros['LPARCabecera'], filtros['LPARDatos']],
-  ['POOLS', 'POOLS', filtros['POOLSCabecera'], filtros['POOLSDatos']],
-  ['MEMORIA', 'MEMORIA', filtros['MEMCabecera'], filtros['MEMDatos']],
-  ['MEMORIA', 'MEMNEW', filtros['MEMNEWCabecera'], filtros['MEMNEWDatos']],
-  ['MEMORIA', 'MEMUSE', filtros['MEMUSECabecera'], filtros['MEMUSEDatos']],
-  ['DISCO', 'DISKBUSY', filtros['DISKBUSYCabecera'], filtros['DISKBUSYDatos']],
-  ['DISCO', 'DISKREAD', filtros['DISKREADCabecera'], filtros['DISKREADDatos']],
-  ['DISCO', 'DISKWRITE', filtros['DISKWRITECabecera'], filtros['DISKWRITEDatos']],
-  ['DISCO', 'DISKXFER', filtros['DISKXFERCabecera'], filtros['DISKXFERDatos']],
-  ['DISCO', 'DISKRXFER', filtros['DISKRXFERCabecera'], filtros['DISKRXFERDatos']],
-  ['DISCO', 'DISKBSIZE', filtros['DISKBSIZECabecera'], filtros['DISKBSIZEDatos']],
-  ['DISCO', 'DISKRIO', filtros['DISKRIOCabecera'], filtros['DISKRIODatos']],
-  ['DISCO', 'DISKWIO', filtros['DISKWIOCabecera'], filtros['DISKWIODatos']],
-  ['DISCO', 'DISKAVGRIO', filtros['DISKAVGRIOCabecera'], filtros['DISKAVGRIODatos']],
-  ['DISCO', 'DISKAVGWIO', filtros['DISKAVGWIOCabecera'], filtros['DISKAVGWIODatos']],
-  ['DISCO', 'DISKSERV', filtros['DISKSERVCabecera'], filtros['DISKSERVDatos']],
-  ['DISCO', 'DISKREADSERV', filtros['DISKREADSERVCabecera'], filtros['DISKREADSERVDatos']],
-  ['DISCO', 'DISKWRITESERV', filtros['DISKWRITESERVCabecera'], filtros['DISKWRITESERVDatos']],
-  ['DISCO', 'DISKWAIT', filtros['DISKWAITCabecera'], filtros['DISKWAITDatos']],
-  ['PAGINACION', 'PAGE', filtros['PAGECabecera'], filtros['PAGEDatos']],
-  ['PAGINACION', 'PAGING', filtros['PAGINGCabecera'], filtros['PAGINGDatos']],
-  ['PAGINACION', 'PROC', filtros['PROCCabecera'], filtros['PROCDatos']],
-  ['FILES', 'FILES', filtros['FILECabecera'], filtros['FILEDatos']],
-  ['NETWORK', 'NETWORK', filtros['NETCabecera'], filtros['NETDatos']],
-  ['NETWORK', 'NETPACKET', filtros['NETPACKETCabecera'], filtros['NETPACKETDatos']],
-  ['NETWORK', 'NETSIZE', filtros['NETSIZECabecera'], filtros['NETSIZEatos']],
-  ['NETWORK', 'NETERROR', filtros['NETERRORCabecera'], filtros['NETERRORDatos'] ],
-  ['PROCESOS', 'UARG', filtros['UARGCabecera'], filtros['UARGDatos'] ],
-  ['PROCESOS', 'TOP', filtros['TOPCabecera'], filtros['TOPDatos'] ]
-]
-
 def convertir_fecha(_fecha):
   str_fecha = ''
   b_fecha_regex = filtros['fecha'].search(_fecha)
@@ -185,6 +150,11 @@ def imprimir_info(archivo_reporte, zzzztimestamp, servidorhostname, seccion, lis
 def imprimir_info_fast(archivo_reporte, zzzzid, zzzztimestamp, servidorhostname, seccion, metrica, metricasubtipo, valor ):
   f = open(archivo_reporte + "_"+seccion + "_.csv", "a")
   f.write(f'{zzzztimestamp},{zzzzid},{servidorhostname},{seccion},{metrica.strip()},{metricasubtipo.strip()},{valor}\n')
+  f.close()
+
+def imprimir_datos_csv(archivo_reporte, seccion, datos):
+  f = open(archivo_reporte + "_"+seccion + "_.csv", "a")
+  f.write(f'{datos}\n')
   f.close()
 
 def get_nombre_aplicacion(proceso):
