@@ -140,8 +140,11 @@ def capturainfo(opcion, origen, directoriodestino):
         df_procesos_uarg.drop(labels=['ZZZZ','Command','Threads'], axis = 1, inplace = True)
         bar.update(2)
         df_tabla_inner_trx = df_procesos_top.set_index('PID').join(df_procesos_uarg.set_index('PID'), rsuffix='_uarg', how='inner')
+        df_tabla_inner_trx = df_tabla_inner_trx.reindex(columns = ['timestamp','ZZZZ','servidor','aplicacion','CPU pct','Usr pct','Sys pct','Threads','Size','ResText','ResData','CharIO','RAM pct','Paging','Command','PPID','USER','GROUP','FullCommand'])
+        df_tabla_inner_trx.insert(3, 'seccion', 'PROCESO')
         bar.update(3)
         df_tabla_inner_trx.to_csv(f'{directoriodestino}/{archivo}_PROCESOS_.csv', index = True, encoding='utf-8')
+
         bar.update(4)
         bar.finish()
         print(f'Número de procesos TOP encontrados: {len(df_procesos_top)}')
