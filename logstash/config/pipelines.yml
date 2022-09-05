@@ -1,0 +1,8 @@
+- pipeline.id: nmon
+  path.config: "/usr/share/logstash/pipeline/nmon.conf"
+  pipeline.workers: 3
+  pipeline.batch.size: 1000
+- pipeline.id: nmon-procesos
+  path.config: "/usr/share/logstash/pipeline/nmon-procesos.conf"
+  pipeline.workers: 3
+  pipeline.batch.size: 1000
