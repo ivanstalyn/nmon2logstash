@@ -119,7 +119,7 @@ def capturainfo(opcion, origen, directoriodestino):
                   datos = ",".join([*datos_arr[1:9]])
                   imprimir_datos_csv(directoriodestino + "/" + archivo,'UARG',datos)
                 else:
-                  datos = ",".join([*[datos_arr[1],datos_arr[2],'0','na','0','na','na','na']])
+                  datos = ",".join([*[datos_arr[1],datos_arr[2],'0','na','0','na','na','na na na na']])
                   imprimir_datos_csv(directoriodestino + "/" + archivo,'UARG',datos)
 
               else:
