@@ -11,10 +11,11 @@ def capturainfo(opcion, origen, directoriodestino):
   for filename in glob.glob(origen):
 
     archivo = posixpath.split(filename)
+    archivo_nombre_original = archivo[1]
     archivo = archivo[1].split('.')[0]
-    print(f'Archivo: {archivo}')
-    topCSV = False
-    uargCSV = False
+    print(f'Archivo: {archivo_nombre_original}')
+    top_CSV = False
+    uarg_CSV = False
 
     with open(os.path.join(os.getcwd(),filename),'r',encoding='utf8') as f:
       
@@ -27,9 +28,9 @@ def capturainfo(opcion, origen, directoriodestino):
       key_previa = ''
       nro_lineas = len(lineas)
 
-      print(f'Total de líneas para analizar: {nro_lineas}')
+      #print(f'Total de líneas para analizar: {nro_lineas}')
 
-      bar = pgbar.ProgressBar(maxval=nro_lineas, widgets=[pgbar.Bar('=', '[', ']'), ' ', pgbar.Percentage()])
+      bar = pgbar.ProgressBar(maxval=nro_lineas, widgets=[pgbar.Bar('█', f'Procesando archivo {archivo_nombre_original} ({nro_lineas} registros) : [', ']'), ' ' , pgbar.Percentage()])
       progres_bar=0
       bar.start()
 
@@ -90,12 +91,12 @@ def capturainfo(opcion, origen, directoriodestino):
                 metricas[b_cabecera_regex.group(1)] = top_arr
                 cabecera = f'timestamp,servidor,aplicacion,ZZZZ,PID,CPU pct,Usr pct,Sys pct,Threads,Size,ResText,ResData,CharIO,RAM pct,Paging,Command'
                 imprimir_datos_csv(directoriodestino + "/" + archivo,'TOP',cabecera)
-                topCSV = True
+                top_CSV = True
               elif(b_cabecera_regex.group(1)=='UARG'):
                 metricas[b_cabecera_regex.group(1)] = b_cabecera_regex.group(0).split(',')
                 cabecera = f'ZZZZ,PID,PPID,Command,Threads,USER,GROUP,FullCommand'
                 imprimir_datos_csv(directoriodestino + "/" + archivo,'UARG',cabecera)
-                uargCSV = True
+                uarg_CSV = True
               else:
                 metricas[b_cabecera_regex.group(1)] = b_cabecera_regex.group(0).split(',')
               continue
@@ -130,9 +131,9 @@ def capturainfo(opcion, origen, directoriodestino):
               imprimir_info(directoriodestino + "/" + archivo, zzzz_timestamp, servidor_hostname, rgx[0], metricas[b_datos_regex.group(1)], datos_arr )
               key_previa = b_datos_regex.group(1)
       bar.finish()
-      if(topCSV and uargCSV):
-        print(f'Resumen de procesos encontrados en {archivo}.nmon:')
-        bar = pgbar.ProgressBar(maxval=5, widgets=[pgbar.Bar('=', '[', ']'), ' ', pgbar.Percentage()])
+      if(top_CSV and uarg_CSV):
+        
+        bar = pgbar.ProgressBar(maxval=5, widgets=[pgbar.Bar('█', f'Extrayendo procesos TOP {archivo_nombre_original} : [', ']'), ' ', pgbar.Percentage()])
         bar.start()
         df_procesos_top = pd.read_csv(f'{directoriodestino}/{archivo}_TOP_.csv', sep=",")
         bar.update(1)
@@ -146,9 +147,14 @@ def capturainfo(opcion, origen, directoriodestino):
         df_tabla_inner_trx.to_csv(f'{directoriodestino}/{archivo}_PROCESOS_.csv', index = True, encoding='utf-8')
 
         bar.update(4)
+        os.remove(f'{directoriodestino}/{archivo}_TOP_.csv')
+        os.remove(f'{directoriodestino}/{archivo}_UARG_.csv')
+
         bar.finish()
+        print(f'Resumen de procesos encontrados en {archivo_nombre_original}:')
         print(f'Número de procesos TOP encontrados: {len(df_procesos_top)}')
         print(f'Número de procesos UARG encontrados: {len(df_procesos_uarg)}')
+    print('---------------------------------------------------------')
               
 
 def main():
