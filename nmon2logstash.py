@@ -28,9 +28,15 @@ def capturainfo(opcion, origen, directoriodestino):
       key_previa = ''
       nro_lineas = len(lineas)
 
-      #print(f'Total de líneas para analizar: {nro_lineas}')
+      widgets = [
+            pgbar.Bar('█', f'Procesando archivo {archivo_nombre_original} ({nro_lineas} registros) : [', ']'), ' ', pgbar.Percentage(),
+            ' (',
+            pgbar.ETA(), 
+            ') ']
+        
+      
 
-      bar = pgbar.ProgressBar(maxval=nro_lineas, widgets=[pgbar.Bar('█', f'Procesando archivo {archivo_nombre_original} ({nro_lineas} registros) : [', ']'), ' ' , pgbar.Percentage()])
+      bar = pgbar.ProgressBar(maxval=nro_lineas, widgets=widgets)
       progres_bar=0
       bar.start()
 
@@ -132,8 +138,13 @@ def capturainfo(opcion, origen, directoriodestino):
               key_previa = b_datos_regex.group(1)
       bar.finish()
       if(top_CSV and uarg_CSV):
+        widgets = [
+            pgbar.Bar('█', f'Extrayendo procesos TOP {archivo_nombre_original} : [', ']'), ' ', pgbar.Percentage(),
+            ' (',
+            pgbar.ETA(), 
+            ') ']
         
-        bar = pgbar.ProgressBar(maxval=5, widgets=[pgbar.Bar('█', f'Extrayendo procesos TOP {archivo_nombre_original} : [', ']'), ' ', pgbar.Percentage()])
+        bar = pgbar.ProgressBar(maxval=5, widgets=widgets)
         bar.start()
         df_procesos_top = pd.read_csv(f'{directoriodestino}/{archivo}_TOP_.csv', sep=",")
         bar.update(1)
