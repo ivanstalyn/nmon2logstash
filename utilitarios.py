@@ -157,7 +157,7 @@ def imprimir_datos_csv(archivo_reporte, seccion, datos):
   f.write(f'{datos}\n')
   f.close()
 
-def get_nombre_aplicacion(proceso):
+def get_nombre_aplicacion(proceso,fullcommand):
   aplicacion = proceso
   if(proceso == 'DataFlowEngine' or proceso == 'bipbroker'):
     aplicacion = 'IBM Integration BUS'
@@ -174,11 +174,22 @@ def get_nombre_aplicacion(proceso):
   if(proceso == 'fcp_daemon'):
     aplicacion = 'Tivoli Monitoring'
 
+  if(proceso == 'java'):
+    b_datos_regex = re.compile(r'(.*)-Dosgi\.install\.area=\/usr\/IBM\/WebSphere\/AppServer(.*)').match(fullcommand)
+    if(b_datos_regex != None):
+      aplicacion = 'WebSphere'
+
+
   return aplicacion
 
-def get_propiedades_aplicacion(proceso, params):
-  parametros = ['na','na']
-  if(proceso == 'DataFlowEngine' or proceso == 'bipbroker'):
-    parametros = ['inode', 'iserver']
+def get_propiedades_aplicacion(aplicacion, fullcommand):
+  parametros = 'na'
+  if(aplicacion == 'IBM Integration BUS'):
+    parametros = fullcommand
+
+  if(aplicacion == 'WebSphere'):
+    b_datos_regex = re.compile(r'(.*)-Dosgi\.configuration\.area=\/profiles\/(.*)\/servers\/(.*)\/configuration(.*)').match(fullcommand)
+    if(b_datos_regex != None):
+      parametros = f'{b_datos_regex.group(2)} {b_datos_regex.group(3)}'
 
   return parametros
