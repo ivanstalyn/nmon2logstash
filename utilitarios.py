@@ -196,7 +196,7 @@ def get_nombre_aplicacion(proceso,fullcommand):
 
 def get_propiedades_aplicacion(aplicacion, fullcommand):
   parametros = 'na'
-  if(aplicacion == 'IBM Integration BUS'):
+  if(aplicacion == 'IBM Integration BUS DataFlowEngine'):
     parametros = fullcommand
 
   if(aplicacion == 'WebSphere'):
