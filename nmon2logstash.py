@@ -103,6 +103,10 @@ def capturainfo(opcion, origen, directoriodestino):
                 cabecera = f'ZZZZ,PID,PPID,Command,Threads,USER,GROUP,FullCommand'
                 imprimir_datos_csv(directoriodestino + "/" + archivo,'UARG',cabecera)
                 uarg_CSV = True
+              elif(b_cabecera_regex.group(1)=='SUMMARY'):
+                metricas[b_cabecera_regex.group(1)] = b_cabecera_regex.group(0).split(',')
+                cabecera = f'timestamp,ZZZZ,servidor,tipo,aplicacion,Nro Procesos,Usr pct,Sys pct,ResTextKB,ResDataKB,CharIOKB,paging,Command'
+                imprimir_datos_csv(directoriodestino + "/" + archivo,'SUMMARY',cabecera)
               else:
                 metricas[b_cabecera_regex.group(1)] = b_cabecera_regex.group(0).split(',')
               continue
@@ -133,6 +137,9 @@ def capturainfo(opcion, origen, directoriodestino):
                   datos = ",".join([*[datos_arr[1],datos_arr[2],'0','na','0','na','na','na']])
                   
                 imprimir_datos_csv(directoriodestino + "/" + archivo,'UARG',datos)
+              elif(b_datos_regex.group(1)=='SUMMARY'):
+                datos = ",".join([*[zzzz_timestamp,datos_arr[1],servidor_hostname,'SUMMARY',get_nombre_aplicacion(datos_arr[9],datos_arr[9])],*datos_arr[2:]])
+                imprimir_datos_csv(directoriodestino + "/" + archivo,'SUMMARY',datos)
               else:
                 imprimir_info(directoriodestino + "/" + archivo, zzzz_timestamp, servidor_hostname, rgx[0], metricas[b_datos_regex.group(1)], datos_arr )
               key_previa = b_datos_regex.group(1)

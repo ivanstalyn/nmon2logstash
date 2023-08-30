@@ -74,6 +74,8 @@ filtros = {
   'TOPDatos' : re.compile(r"(TOP),(\d+),(T\d+),(.*)"),
   'UARGCabecera' : re.compile(r"(UARG),(\+Time),(.*)"),
   'UARGDatos' : re.compile(r"(UARG),(T\d+),(.*)"),
+  'SUMMARYCabecera' : re.compile(r"(SUMMARY),(Summary of Processes),(.*)"),
+  'SUMMARYDatos' : re.compile(r"(SUMMARY),(T\d+),(.*)"),
 }
 
 diccionario_cabeceras = {
@@ -109,7 +111,8 @@ diccionario_cabeceras = {
   'NETSIZE' : ['NETWORK',  filtros['NETSIZECabecera'], filtros['NETSIZEatos']],
   'NETERROR' : ['NETWORK',  filtros['NETERRORCabecera'], filtros['NETERRORDatos'] ],
   'UARG' : ['PROCESOS',  filtros['UARGCabecera'], filtros['UARGDatos'] ],
-  'TOP' : ['PROCESOS',  filtros['TOPCabecera'], filtros['TOPDatos'] ]
+  'TOP' : ['PROCESOS',  filtros['TOPCabecera'], filtros['TOPDatos'] ],
+  'SUMMARY' : ['SUMMARY',  filtros['SUMMARYCabecera'], filtros['SUMMARYDatos'] ],
 }
 
 def convertir_fecha(_fecha):
@@ -165,8 +168,11 @@ def imprimir_datos_csv(archivo_reporte, seccion, datos):
 
 def get_nombre_aplicacion(proceso,fullcommand):
   aplicacion = proceso
-  if(proceso == 'DataFlowEngine' or proceso == 'bipbroker'):
-    aplicacion = 'IBM Integration BUS'
+  if(proceso == 'DataFlowEngine'):
+    aplicacion = 'IBM Integration BUS DataFlowEngine'
+  
+  if(proceso == 'bipbroker'):
+    aplicacion = 'IBM Integration BUS bipbroker'
                   
   if(proceso == 'amqzlaa0' ):
     aplicacion = 'IBM Websphere MQ'
