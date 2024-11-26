@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3.8
 import glob, os, argparse
 import posixpath
 import progressbar as pgbar
