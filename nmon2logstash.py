@@ -31,7 +31,7 @@ def capturainfo(opcion, origen, directoriodestino):
       widgets = [
             pgbar.Bar('█', f'Procesando archivo {archivo_nombre_original} ({nro_lineas} registros) : [', ']'), ' ', pgbar.Percentage(),
             ' (',
-            pgbar.ETA(), 
+            pgbar.ETA(),
             ') ']
         
       
@@ -95,17 +95,17 @@ def capturainfo(opcion, origen, directoriodestino):
                 top_arr = b_cabecera_regex.group(0).split(',')
                 top_arr[1], top_arr[2] = top_arr[2], top_arr[1]
                 metricas[b_cabecera_regex.group(1)] = top_arr
-                cabecera = f'timestamp,servidor,RAM Cal pct,ZZZZ,PID,CPU pct,Usr pct,Sys pct,Threads,Size,ResText,ResData,CharIO,RAM pct,Paging,Command'
+                cabecera = 'timestamp,servidor,RAM Cal pct,ZZZZ,PID,CPU pct,Usr pct,Sys pct,Threads,Size,ResText,ResData,CharIO,RAM pct,Paging,Command'
                 imprimir_datos_csv(directoriodestino + "/" + archivo,'TOP',cabecera)
                 top_CSV = True
               elif(b_cabecera_regex.group(1)=='UARG'):
                 metricas[b_cabecera_regex.group(1)] = b_cabecera_regex.group(0).split(',')
-                cabecera = f'ZZZZ,PID,PPID,Command,Threads,USER,GROUP,FullCommand'
+                cabecera = 'ZZZZ,PID,PPID,Command,Threads,USER,GROUP,FullCommand'
                 imprimir_datos_csv(directoriodestino + "/" + archivo,'UARG',cabecera)
                 uarg_CSV = True
               elif(b_cabecera_regex.group(1)=='SUMMARY'):
                 metricas[b_cabecera_regex.group(1)] = b_cabecera_regex.group(0).split(',')
-                cabecera = f'timestamp,ZZZZ,servidor,tipo,aplicacion,Nro Procesos,Usr pct,Sys pct,ResTextKB,ResDataKB,CharIOKB,paging,Command'
+                cabecera = 'timestamp,ZZZZ,servidor,tipo,aplicacion,Nro Procesos,Usr pct,Sys pct,ResTextKB,ResDataKB,CharIOKB,paging,Command'
                 imprimir_datos_csv(directoriodestino + "/" + archivo,'SUMMARY',cabecera)
               else:
                 metricas[b_cabecera_regex.group(1)] = b_cabecera_regex.group(0).split(',')
@@ -203,4 +203,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    print(f'Proceso terminado!')
+    print('Proceso terminado!')
